@@ -1,0 +1,21 @@
+void setup()
+{
+  pinMode(8, OUTPUT);
+}
+
+void loop()
+{
+  digitalWrite(8, HIGH);
+  delay(50); 
+  digitalWrite(8, LOW);
+  delay(50);
+}
+
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------
+TOOLS->BOARD"Ardunio/Genuino"
+port:shown on the(serial port currently) 
+verify
+upload
+//resiter gry pin connect to 8th pin
+//light pin connect to gnd
