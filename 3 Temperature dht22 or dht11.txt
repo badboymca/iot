@@ -1,0 +1,52 @@
+#include <DHT.h>
+#define dht_dpin 12
+#define DHTTYPE DHT11
+DHT dht(12,DHT11);
+float temp;
+float hum;
+
+ 
+void setup()
+{
+  Serial.begin(9600);
+  dht.begin();
+}
+
+void loop()
+{
+  delay(500); 
+  temp=dht.readTemperature(false);
+  hum=dht.readHumidity();
+  Serial.print("Temperature");
+  Serial.print(temp);
+  Serial.print("Humidity");
+  Serial.println(hum);
+  Serial.println("");
+  delay(2500);
+}
+
+
+---------------------------------------------------------------------------------
+DHT22(4 PIN CONNECTION) METHOD
+
+step 1:go to sketch and dht 22 install
+
+Step 2:FOLLW THE STEPS(3 MALE TO MALE WIRES)
+
+DIGITAL(PWM~) SIDE CONNECT ITEMS
+*GND conect to 1(ABCD BREAD BOARD INSERT DHT22-> RIGHT SIDE FIRST TO LEFT SIDE)
+XXX  Not connect 2 pin XXX  
+*12  conect to 3(DHT 22)
+POWER(SIDE INSERT)
+*5V to first(DHT 22)
+----------------------------------------------
+DHT 11(3 PIN CONNECTION) METHODS
+
+step 1:go to sketch and dht 11 install
+
+DIGITAL(PWM~) SIDE CONNECT ITEMS
+*GND conect to GND(DHT 11)
+*12 connect to DATA(DHT 11)
+POWER(SIDE INSERT)
+*5V connect to VOLT(DHT 11)
+Step3:board com PORT select after verify,upload,sketch

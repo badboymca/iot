@@ -1,0 +1,150 @@
+ JSON LINK  ESP32 AND ESP8266
+https://raw.githubusercontent.com/espressif/arduino-esp32/gh-pages/package_esp32_index.json
+,http://arduino.esp8266.com/stable/package_esp8266com_index.json
+-----------------------------------------------------------------------------------------------
+ESP8266 offline
+
+const int trigPin = 12;
+const int echoPin = 14;
+#define SOUND_VELOCITY 0.034
+#define CM_TO_INCH 0.393701
+long duration;
+float distanceCm;
+float distanceInch;
+void setup() {
+  Serial.begin(115200); 
+  pinMode(trigPin, OUTPUT); 
+  pinMode(echoPin, INPUT); 
+}
+void loop() {
+  digitalWrite(trigPin, LOW);
+  delayMicroseconds(2);
+  digitalWrite(trigPin, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(trigPin, LOW);
+  duration = pulseIn(echoPin, HIGH);
+  distanceCm = duration * SOUND_VELOCITY/2;
+  distanceInch = distanceCm * CM_TO_INCH;
+  Serial.print("Distance (cm): ");
+  Serial.println(distanceCm);
+  Serial.print("Distance (inch): ");
+  Serial.println(distanceInch);
+  delay(1000);
+}
+-----------------------------------------------------------------------------------
+ESP8266 ONLINE
+
+#include <ESP8266WiFi.h>
+
+String apiKey = "HXLHD60DU9WQO7YZ"; // write your "Write API key"
+const char* ssid = "EEE_5"; // write your "wifi name"
+const char* password = "507eeepsnacet"; // write your "wifi password"
+const char* server = "api.thingspeak.com";
+WiFiClient client;
+
+//for NodeMCU
+const int trigPin = 12;
+const int echoPin = 14;
+// defines variables
+long duration;
+int distance;
+
+void setup() 
+{
+  Serial.begin(115200);
+  Serial.println("Serial Begin");
+  pinMode(trigPin, OUTPUT); // Sets the trigPin as an Output
+  pinMode(echoPin, INPUT); 
+  WiFi.begin(ssid, password);
+  Serial.println();
+  Serial.print("Connecting to ");
+  Serial.println(ssid);
+        
+  while (WiFi.status() != WL_CONNECTED)
+  {
+    delay(50);
+    Serial.print(".");
+  }
+    Serial.println("");
+    Serial.println("WiFi connected");
+}
+
+void loop() 
+{
+  ultra();
+  delay(100);
+  // we have made changes in program to decrease the latency.
+  // but it will take minimum 15 second to post data on Thingspeak channel.
+    if (client.connect(server,80))
+    {
+      fwd_to_Thingspeak();
+    }
+    client.stop();
+    Serial.println("Waiting");
+    delay(1000);
+}
+
+void ultra()
+{
+  // Clears the trigPin
+  digitalWrite(trigPin, LOW);
+  delayMicroseconds(2);
+  // Sets the trigPin on HIGH state for 10 micro seconds
+  digitalWrite(trigPin, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(trigPin, LOW);
+  
+  duration = pulseIn(echoPin, HIGH) ;
+  distance= duration*0.034/2;
+  Serial.println("Distance =" + String(distance) + " cm");
+}
+
+void fwd_to_Thingspeak()
+{
+  String postStr = apiKey;
+  postStr +="&field1=";
+  postStr += String(distance); // ultrasonic data
+  postStr += "\r\n\r\n";
+          
+  client.print("POST /update HTTP/1.1\n");
+  client.print("Host: api.thingspeak.com\n");
+  client.print("Connection: close\n");
+  client.print("X-THINGSPEAKAPIKEY: "+apiKey+"\n");
+  client.print("Content-Type: application/x-www-form-urlencoded\n");
+  client.print("Content-Length: ");
+  client.print(postStr.length());
+  client.print("\n\n");
+  client.print(postStr);
+          
+  Serial.println("Send data to thingspeak: ");
+  Serial.print("Content-Length: ");
+  Serial.print(postStr.length());
+  Serial.print(" Field-1: ");
+  Serial.print(distance); // ultrasonic data
+  Serial.println(" data send");            
+}
+-----------------------------------------------------------------------------------
+OFFLINE SETUP ARDIUNO
+
+*File->Preference->(JSON file paste)
+*Sketch->Include->libarary->esp8266 insatll or check
+*Tools->Board->Generic ESP8266 module
+*port->com6 or com8 
+*verify,upload.
+------------------------------------------------------------------
+Online SETUP
+
+*Go to thinkspeak.com
+*get started free->Create One->after signup
+*New Channel->Field1 enter the name(Distance)
+*Next show on the menu bar(API key) and after copy the api go to paste yourcode,
+String apikey="api key paste"
+
+------------------------------------------------------------------------------------
+ESP 8266 connectivity
+
+*esp8266 (D5) to ultrasonic sensor (Echo) insert on bread board
+*esp8266 (D6) to ultrasonic sensor (Trig) insert on bread board
+*esp8266 (GND)to ultrasonic sensor insert (GND) on bread board
+*esp8266 (VIN)to ultrasonic sensor insert (Vcc) on bread board
+

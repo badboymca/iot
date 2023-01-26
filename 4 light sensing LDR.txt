@@ -1,0 +1,35 @@
+const int ledpin=5;
+const int ldrpin=A0;
+void setup() {
+Serial.begin(9600);
+pinMode(ledpin,OUTPUT);
+pinMode(ldrpin,INPUT);
+}
+
+void loop() {
+int ldrstatus=analogRead(ldrpin);
+delay(500);
+if(ldrstatus<=200){
+  digitalWrite(ledpin,HIGH);
+  Serial.print("Darkness over here,Turn on the LED: ");
+  Serial.println(ldrstatus);
+  delay(1000);
+}else{
+  digitalWrite(ledpin,LOW);
+  Serial.print("There is sufficient light turn off the LED: ");
+  Serial.println(ldrstatus);
+  delay(500);
+}
+--------------------------------------------------------------------------------
+1. DIGITAL(PWM~)
+
+*~5 connect to led light right side insert on bread board
+* GND connect on resister side part 2 bread board insert
+------------------------------------------------------------
+2.POWER
+
+*GND to connect LDR bread board on LEFT side
+----------------------------------------------------------------
+3.ANLALOG
+
+*A0 to conncet LDR bread board on RIGHT side

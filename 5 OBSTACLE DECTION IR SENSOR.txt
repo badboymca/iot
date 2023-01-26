@@ -1,0 +1,30 @@
+int SensorPin=2;
+int OutputPin=13;
+void setup() {
+pinMode(OutputPin,OUTPUT);
+pinMode(SensorPin,INPUT);
+Serial.begin(9600);
+}
+void loop() {
+int SensorValue=digitalRead(SensorPin);
+Serial.print("SensorPin Value");
+Serial.println(SensorValue);
+delay(1000);
+if(SensorValue==LOW){
+  digitalWrite(OutputPin,HIGH);
+}
+else{
+  digitalWrite(OutputPin,LOW);
+}
+}
+---------------------------------------------------------------------------
+DIGITAL(PWT~)
+
+*2 to IR SENSOR white color side left insert first pin
+*13 to LED bulb Resister right side insert
+------------------------------------------------------------------
+POWER
+
+*5V to connect IR sensor right side first insert
+*GND to connect IR sensor Center Insert(note:5V next GND)
+*GND to connect to LED bulb LEFT side insert
