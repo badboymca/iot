@@ -1,0 +1,49 @@
+int ldr=A1;
+int lectura;
+int led=8;
+
+void setup()
+{
+ 
+pinMode(led, OUTPUT);  
+Serial.begin(9600);
+  
+}
+
+void loop()
+{
+  
+lectura=analogRead(ldr);
+Serial.println(lectura);
+delay(300);
+
+if (lectura>860)
+{
+digitalWrite(led,1);
+}
+else
+{
+digitalWrite(led,0);
+}
+
+}
+
+-----------------------------------------------------------------------------------
+DIGITAL(PWM~)
+*8 to LED bulb right side insert
+*GND to part2 resister side INSTERT(KQ(TOP-RED,CENTER-BLACK,BOTTOM-COPY))
+--------------------------------------------------------------------------------
+POWER
+*(5V)Next GND to connect LDR right side insert(nOTE:light insert same line LDR insert)
+-------------------------------------------------------------------------------------
+ANALOG
+*A1 to LDR left side insert(note: LDR pin front in insert)
+*Resister use on(Q 330(COPY,ORANGE,ORANGE))
+----------------------------------------------------------------------------------
+BREAD BOARD
+*LDR resister to left straight side jumper wires only insert (-) side not connect mc
+----------------------------------------------------------------------------------
+POWER
+*5V to bread board (+) side LDR right same side insert the jumper wire
+https://www.tinkercad.com/things/g2ZrgjIBhUV
+-------------------------------------------------------------------------
